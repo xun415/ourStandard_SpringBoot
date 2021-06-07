@@ -1,0 +1,98 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+
+
+<script type="text/javascript">
+    var str = '${ok}';
+    console.log(str);
+    if (str==="ok"){
+        console.log(str);
+        self.close();
+    }else {
+        console.log(str);
+    }
+</script>
+
+<!-- CONTENT -->
+<div class="content_wrap inner">
+    <!-- side nav-->
+    <div th:replace="~{/side_nav.html}"></div>
+
+        <!-- ORDER :주문조회-->
+        <div class="order_wrap">
+            <div class="title_area">
+                <div class="title_area1">
+                    <h1>주문 조회</h1>
+                </div>
+                <div class="title_area2">
+                    <h2>주문 상품 정보</h2>
+                </div>
+            </div>
+            <div class="orderHistory">
+                <table class="type11">
+                    <thead>
+                    <tr>
+                        <th style="width:25%">주문일자</th>
+                        <th style="width:25%">이미지</th>
+                        <th style="width:25%">상품명</th>
+                        <th style="width:5%">사이즈</th>
+                        <th style="width:10%">가격</th>
+                        <th style="width:5%">수량</th>
+                        <th style="width:10%">주문금액</th>
+                        <th style="width:25%">주문상태</th>
+                        <th style="width:10%">기타</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr  th:if="${orderHistoryList.size()!=null}" th:each="dto:${orderHistoryList}">
+                        <td>[[${#temporals.format(dto.orderDate,'yyyy/MM/dd')}]]</td>
+                        <td><img th:src="@{/item/display(fileName=${dto.th_Img})}"></td>
+                        <td>[[${dto.itemName}]]</td>
+                        <td>[[${dto.size}]]</td>
+                        <td>[[${dto.price}]]</td>
+                        <td>[[${dto.quantity}]]</td>
+                        <td>[[${dto.orderPrice}]]</td>
+                        <td><input type="hidden" class="orderStatus" th:value="${dto.orderStatus}">[[${dto.orderStatus}]]</td>
+                        <td th:if="${dto.orderStatus.equals('CANCEL')}">주문 취소</td>
+                        <td th:unless="${dto.orderStatus.equals('CANCEL')}"><form method="get" th:action="@{/review/{itemId}/review(itemId=${dto.itemId})}"><input type="submit" value="리 뷰"></form>
+                        <input type="button" th:onclick="fn_cancleOrder([[${dto.orderId}]],[[${dto.orderStatus}]])" value="주문취소">
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <h2 th:unless="${orderHistoryList.size()!=null}" th:colspan=""> 주문 내역이 없습니다</h2>
+
+            </div>
+
+        </div>
+</div>
+<script>
+    function fn_cancleOrder(orderId,orderStatus){
+    console.log(orderId);
+    console.log(orderStatus);
+    if (orderStatus !="결제완료"){
+        alert("배송 시작된 주문은 취소할 수 없습니다.");
+    }else{
+        let confirmVal = confirm("주문 취소하시겠습니까?");
+        if (confirmVal){
+            var form = document.createElement('form');
+            form.setAttribute('method', 'post');
+            form.setAttribute('action', '/store/order/'+orderId+'/delete');
+            document.charset = "utf-8";
+
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+
+    }
+</script>
+
+
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

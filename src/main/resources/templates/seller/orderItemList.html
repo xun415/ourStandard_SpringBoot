@@ -1,0 +1,61 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<style>
+
+    body{
+        margin-left: 100px;
+        margin-right: 10%;
+    }
+    .table{
+        width: 1200px;
+    }
+</style>
+
+<!-- CONTENT -->
+<div class="content_wrap">
+    <!-- side_nav -->
+    <div class="col-auto p-0">
+        <div class="side_nav">
+            <div class="side_nav_item">
+                <p class="side_nav_title">브랜드 관리페이지</p>
+                <ul>
+                    <li><a th:href="@{/item/items}">상품관리</a></li>
+                    <li><a th:href="@{/store/purchaseList}">구매관리</a></li>
+                    <li><a th:href="@{/review/brand}">리뷰관리</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <br><br>
+        <h3>상품관리</h3>
+        <br>
+
+        <table class="table table-hover" height="100" width="1100" style="text-align:center;">
+            <thead>
+            <tr>
+                <th style="width:5%; height:10%">오더 아이템 아이디</th>
+                <th style="width:5%; height:10%">상품명</th>
+                <th style="width:5%; height:10%">수 량</th>
+                <th style="width:5%; height:10%">사이즈</th>
+                <th style="width:5%; height:10%">주문 가격</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="dto : ${orderItemList}">
+                <td>[[${dto.orderItemId}]]</td>
+                <td>[[${dto.itemName}]]</td>
+                <td>[[${dto.quantity}]]</td>
+                <td>[[${dto.size}]]</td>
+                <td>[[${dto.price}]]</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

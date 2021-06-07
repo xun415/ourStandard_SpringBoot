@@ -1,0 +1,35 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+
+<!-- CONTENT -->
+<div class="content_wrap inner">
+    <!-- side nav-->
+    <div th:replace="~{/side_nav.html}"></div>
+    <!-- My page -->
+
+    <div class="mypage_wrap">
+        <div class="title_area1">
+            <h1> 마이 페이지 </h1>
+        </div>
+        <br>
+        <div class="mypage_table">
+            <table class="type14">
+                <thead>
+                <tr class="welcome">
+                    <th>
+                        <img th:src="@{/img/person.png}" class="mypageimg" width="100px" height="100px">
+                    </th>
+                    <td class="textbox">
+                        <h2>  [[${#authentication.name}]] 님 저희 쇼핑몰을 이용해 주셔서 감사합니다.
+                        </h2>
+                    </td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

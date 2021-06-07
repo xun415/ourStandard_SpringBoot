@@ -1,0 +1,160 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<style>
+    body{
+        margin-left: 100px;
+        margin-right: 10%;
+    }
+    .table{
+        width: 1200px;
+    }
+</style>
+
+<!-- CONTENT -->
+<div class="content_wrap">
+    <!-- side_nav -->
+
+    <div class="col-auto p-0">
+        <div class="side_nav">
+            <div class="side_nav_item">
+                <p class="side_nav_title" font_size="100px">브랜드 관리페이지</p>
+                <ul>
+                    <li><a th:href="@{/item/items}">상품관리</a></li>
+                    <li><a th:href="@{/store/purchaseList}">구매관리</a></li>
+                    <li><a th:href="@{/review/brand}">리뷰관리</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <br><br>
+        <h3>구매관리</h3>
+        <br>
+        <div class="allCheck">
+            <input type="checkbox" name="allCheck" id="allCheck" /><label
+                for="allCheck">모두 선택</label>
+            <script>
+                $("#allCheck").click(function() {
+                    var chk = $("#allCheck").prop("checked");
+                    if (chk) {
+                        $(".chBox").prop("checked", true);
+                    } else {
+                        $(".chBox").prop("checked", false);
+                    }
+                });
+            </script>
+
+
+        </div>
+        <h2 th:unless="${list!=null}">아직 주문 내역이 없습니다.</h2>
+        <table th:if="${list !=null}" class="table table-hover" height="100" width="1100">
+            <thead>
+            <tr>
+                <th style="width:2%; height:10%">선택</th>
+                <th style="width:2%; height:10%">주문정보</th>
+                <th style="width:4%; height:10%">고객아이디</th>
+                <th style="width:4%; height:10%">고객명</th>
+                <th style="width:3%; height:10%">주소</th>
+                <th style="width:5%; height:10%">연락처</th>
+                <th style="width:5%; height:10%">주문일</th>
+                <th style="width:5%; height:10%">배송상태</th>
+<!--                <th style="width:5%; height:10%">배송상태적용</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each=" dto,state : ${list}">
+<!--                <form th:action="@{/store/delivery/{id}/change(id=${dto.deliveryId})}" method="post">-->
+                    <td><div class="checkBox">
+                        <input type="checkbox" name="chBox" class="chBox" />
+<!--                               data-o_Num="${orderHistory.o_Num}" />-->
+
+                    </div></td>
+                    <td><a th:href="@{/store/order/{orderNum}(orderNum=${dto.orderNumber})}">[[${dto.orderNumber}]]</a></td>
+                    <td>[[${dto.userId}]]</td>
+                    <td>[[${dto.userName}]]</td>
+                    <td>[[${dto.address.zipcode }+${dto.address.city }+${dto.address.street}]]</td>
+                    <td>[[${dto.phoneNum}]]</td>
+                    <td>[[${#temporals.format(dto.orderDate, 'yyyy/MM/dd' )} ]]</td>
+                    <input type="hidden" class="deliveryId" th:value="${dto.deliveryId}">
+                    <td><select th:unless="${dto.deliveryStatus.equals('CANCEL')}" id="o_Delivery" class="deliveryValues" name="o_Delivery" th:onchange="changeDeliveryStatus([[${dto.deliveryId}]],[[${state.index}]])">
+                        <option th:value="${dto.deliveryStatus}">[[${dto.deliveryStatus}]]</option>
+                        <option value="결제완료">결제완료</option>
+                        <option value="상품준비중">상품준비중</option>
+                        <option value="배송시작">배송시작</option>
+                        <option value="배송중">배송중</option>
+                        <option value="배송완료">배송완료</option>
+<!--                        결제완료, 배송시작, 상품준비중, 배송중, 배송완료-->
+                    </select>
+                    <input th:if="${dto.deliveryStatus.equals('CANCEL')}" value="CANCEL" type="text" readonly>
+
+                    </td>
+<!--                    <td><input type="submit" value="적용하기"></td>-->
+<!--                </form>-->
+            <script>
+                function changeDeliveryStatus(deliveryId,index){
+                    //하나의 값만 받음.
+                    //여러개의 값중에 어떻게 특정하나
+                    //서버로 보내야 하는 값은 id와 배송상태
+
+                    console.log(index);
+
+                    console.log(deliveryId);
+                    var deliverArray = new Array();
+                    deliverArray.push($('.deliveryValues').val())
+                    var deliveryVal= deliverArray[index];
+
+                    console.log(deliveryVal);
+                    console.log("/store/delivery/"+deliveryId+"/change");
+
+
+
+
+                    $.ajax({
+                        url:"/store/delivery/"+deliveryId+"/change",
+                        type:"post",
+                        data:  {"data":JSON.stringify(deliveryVal)},
+                        success: function (result){
+                            console.log("변경완료");
+                        },
+                        error:function (){
+                            alert("에러발생")
+                        }
+
+                    });
+
+
+                        // var form = document.createElement("form");
+                        // form.setAttribute("charset", "UTF-8");
+                        // form.setAttribute("method", "Post");
+                        // form.setAttribute("action", "/store/delivery/"+deliveryId[index]+"/change");
+                        //
+                        // var hiddenField = document.createElement("input");
+                        // hiddenField.setAttribute("type", "hidden");
+                        // hiddenField.setAttribute("name", "status");
+                        // hiddenField.setAttribute("value",deliveryVal[index] );
+                        //
+                        // form.appendChild(hiddenField);
+                        //
+                        // document.body.appendChild(form);
+                        // form.submit();
+
+
+
+
+                }
+            </script>
+
+            </tbody>
+        </table>
+        <br>
+    </div>
+
+
+</div>
+
+
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

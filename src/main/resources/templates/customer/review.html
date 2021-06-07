@@ -1,0 +1,65 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+
+<!-- CONTENT -->
+<div class="content_wrap inner">
+    <!-- side nav-->
+    <div th:replace="~{/side_nav.html}"></div>
+    <!-- My page -->
+
+    <div class="mypage_wrap">
+        <div class="title_area1">
+            <h1> 리뷰 페이지 </h1>
+        </div>
+        <br>
+        <div class="mypage_table">
+            <table class="type14">
+
+
+                    <th>
+                        <img th:src="@{/img/person.png}" class="mypageimg" width="100px" height="100px">
+                    </th>
+                    <td class="textbox">
+                        <table th:if="${review.getText()!=null}">
+
+                            <tr>
+                                <th> 별 점 </th>
+                                <th colspan="8"> 리 뷰 </th>
+                            </tr>
+                            <form method="post">
+                                <tr th:object="${review}">
+                                    <input type="hidden" th:field="*{reviewId}" th:value="${review.getReviewId()}">
+                                    <input type="hidden" th:field="*{itemId}" th:value="${review.getItemId()}">
+                                    <td><input type="text" th:field="*{grade}" th:value="${review.getGrade()}"></td>
+                                    <td><textarea colspan="8" cols="50" rows="5" th:field="*{text}" th:placeholder="${review.getText()}" ></textarea></td>
+                                </tr>
+                                <tr>
+                                <input type="submit" value="수정완료" th:formaction="@{/review/modify}">
+                                <input type="submit" th:value="삭제하기" th:formaction="@{/review/delete}">
+                                </tr>
+                            </form>
+                        </table>
+                        <table th:unless="${review.getText()!=null}">
+                            <tr>
+                            <th> 별 점 </th>
+                            <th colspan="8"> 리 뷰 </th>
+                            </tr>
+                            <form th:action="@{/review/new}" method="post">
+                            <tr th:object="${review}">
+                                <input type="hidden" th:field="*{itemId}" th:value="${review.getItemId()}">
+                                <td><input type="text" th:field="*{grade}"></td>
+                                <td><textarea colspan="8" cols="50" rows="5" th:field="*{text}"></textarea></td>
+                            </tr><input type="submit" value="작성완료">
+                            </form>
+                        </table>
+
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

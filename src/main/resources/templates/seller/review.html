@@ -1,0 +1,126 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<style>
+    body{
+        margin-left: 100px;
+        margin-right: 10%;
+    }
+    .table{
+        width: 1200px;
+    }
+
+    textarea{
+        height:100px;
+        width:1200px;
+    }
+</style>
+
+<!-- CONTENT -->
+<div class="content_wrap">
+    <!-- side_nav -->
+    <div class="col-auto p-0">
+        <div class="side_nav">
+            <div class="side_nav_item">
+                <p class="side_nav_title">브랜드 관리페이지</p>
+                <ul>
+                    <li><a th:href="@{/item/items}">상품관리</a></li>
+                    <li><a th:href="@{/store/purchaseList}">구매관리</a></li>
+                    <li><a th:href="@{/review/brand}">리뷰관리</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <br><br>
+        <h3>리뷰 관리</h3>
+        <br>
+        <div class="allCheck">
+            <input type="checkbox" name="allCheck" id="allCheck" /><label
+                for="allCheck">모두 선택</label>
+            <script>
+                $("#allCheck").click(function() {
+                    var chk = $("#allCheck").prop("checked");
+                    if (chk) {
+                        $(".chBox").prop("checked", true);
+                    } else {
+                        $(".chBox").prop("checked", false);
+                    }
+                });
+            </script>
+            <a class="delBtn">
+                <button type="button" class="selectDelete_btn">답변 삭제하기</button>
+                <script>
+                    $(".selectDelete_btn").click(function() {
+                        var confirm_val = confirm("정말 답변을 삭제 하시겠습니까?");
+
+                        if (confirm_val) {
+                            var checkArr = new Array();
+                            $("input[class='chBox']:checked").each(function() {
+                                checkArr.push($(this).attr("data-r_Seq"));
+                            });
+                            if (!(checkArr == "")) {
+                                $.ajax({
+                                    url : "DeleteReviewReply",
+                                    type : "post",
+                                    data : {
+                                        chBox : checkArr
+                                    },
+                                    success : function(result) {
+                                        alert("답변삭제 성공");
+                                        location.href = "Review";
+                                    }
+                                });
+                            }else{
+                                alert("다삭제할 게시물을 선택해주세요");
+                            }
+                        }
+                    });
+                </script>
+            </a>
+
+        </div>
+        <h3 th:if="${reviewDTOList ==null}">아직 등록된 리뷰가 없습니다.</h3>
+        <table th:unless="${reviewDTOList ==null}" class="table table-hover" height="100" width="1100">
+            <thead>
+            <tr>
+                <th style="width:1%; height:10%">선택</th>
+                <th style="width:1%; height:10%">상품명</th>
+                <th style="width:1%; height:10%">글쓴이</th>
+                <th style="width:1%; height:10%">내용</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="review, state : ${reviewDTOList}">
+                <td><div class="checkBox">
+                    <input type="checkbox" name="chBox" class="chBox"
+                           data-r_Seq="${state.index}"/>
+                    <script>
+                        $(".chBox").click(
+                            function() {
+                                $("#allCheck").prop(
+                                    "checked",
+                                    false);
+                            });
+                    </script>
+                </div></td>
+
+                <td>[[${review.itemName}]]</td>
+                <td>[[${review.writer}]]</td>
+                <td>[[${review.text}]]</td>
+                <input type="hidden" class="reviewId" th:value="${review.reviewId}">
+                <input type="hidden" class="itemId" th:value="${review.itemId}">
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

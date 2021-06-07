@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INDEX</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" media="(max-width:1290px)" th:href="@{/css/main_medium.css}" >
+    <link rel="stylesheet" media="(max-width:1290px)" th:href="@{/css/main_small.css}" >
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/main.js}"></script>
+    <script type="text/javascript" th:src="@{/js/count.js}"></script>
+</head>
+<header class="section">
+    <div class="inner clearfix">
+        <div class="menu-group float--left">
+            <!-- <div class="logo"> -->
+            <a href="" class="logo">
+                <img class="newlogo" th:src="@{/img/NewLogo.png}" width="180px" height="42px" margin-right="10px">
+            </a>
+            <!-- </div> -->
+            <ul class="main-menu toggle">
+                <li><a th:href="@{/store/main}">Store</a></li>
+                <li sec:authorize="hasRole('ROLE_BrandManager')" ><a th:href="@{/item/items}">BrandManager</a></li>
+                <li sec:authorize="hasRole('ROLE_Admin')"><a th:href="@{/admin/main}">Admin</a></li>
+                <li><a th:href="@{/customer/myPage}">My page</a></li>
+
+            </ul>
+        </div>
+<!--        <script th:inline="javascript">-->
+<!--            // var authorized = [[${#authentication.Authenticated}]]-->
+<!--            var customer =[[${#authentication.name}]];-->
+
+<!--            // console.log(authorized);-->
+
+<!--            var logined = (customer == 'anonymousUser')? false:true;-->
+<!--            console.log(logined);-->
+
+<!--        </script>-->
+
+
+        <div class="sign-group float--right toggle">
+            <ul class="sub-menu">
+                    <li sec:authorize="isAuthenticated()" ><a th:href="@{/logout}">Logout</a></li>
+                    <li sec:authorize="isAuthenticated()"><a th:href="@{/customer/myPage}">[[${#authentication.name}]]님 환영합니다</a></li>
+
+                    <li sec:authorize="isAnonymous()"><a th:href="@{/login}">login</a></li>
+                    <li sec:authorize="isAnonymous()"><a th:href="@{/cutomer/register}">register</a></li>
+
+
+            </ul>
+
+        </div>
+        <div id="toggle-btn">Header Menu Toggle Button</div>
+    </div>
+</header>

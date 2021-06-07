@@ -1,0 +1,283 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- HEADER -->
+<div th:replace="~{/header.html}"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+<style>
+
+    .secondbody{
+        width:300px;
+        margin-top: 45px;
+    }
+
+    .content_wrap {
+        margin-left: 100px;
+        margin-right: 7%;
+    }
+
+    .col-auto ul li a{
+        color: black;
+        text-decoration: none;
+        display: inline-block;
+        position: relative;
+    }
+    .col-auto ul li a:after {
+        background: none repeat scroll 0 0 transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 1px;
+        left: 50%;
+        position: absolute;
+        background: black;
+        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+        width: 0;
+    }
+    .col-auto ul li a:hover:after {
+        width: 100%;
+        left: 0;
+    }
+
+    .productside{
+        display:flex;
+        /*     border:solid 1px red; */
+        padding-left:65px;
+        padding-top:20px;
+    }
+
+
+    .review{
+
+        width:900px;
+        height:600px;
+        padding-top:190px;
+        margin-left:55px;
+
+    }
+
+    .picture{
+        float:left;
+
+    }
+
+    .r_Coment{
+        margin:0;
+
+    }
+    .review_list{
+        float:left;
+        padding-top:10px;
+        padding-left:30px;
+        vertical-align: middle;
+        text-align:center;
+        padding-bottom:30px;
+
+    }
+    .detailExplain{
+        padding-top:30px;
+        padding-bottom:30px;
+
+    }
+
+    .r_Title{
+        width:86%;
+    }
+
+
+    .orderNow{
+        float:right;
+        background:none;
+        border:none;
+        padding-left:60px;
+        margin-top:80px;
+    }
+
+    .orderNow img{
+        width:30px;
+        height:30px;
+    }
+
+    .orderList{
+        float:right;
+        width:30px;
+        height:30px;
+        margin-top:85px;
+        margin-left:15px;
+    }
+
+    .cart_index{
+        padding-bottom:20px;
+    }
+
+    textarea{
+        height:100px;
+        width:720px;
+    }
+
+</style>
+
+<div class="content_wrap">
+
+    <div class="col-auto p-0">
+        <div class="side_nav">
+            <div class="side_nav_item">
+                <p class="side_nav_title">Store</p>
+
+                <div class="dropdown">
+                    <div th:each="category1 : ${categoryList}">
+                        <a  class="  dropdown-toggle" style="color: black; text-decoration: none" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            [[${category1.categoryName}]]</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a th:each="category2 :${category1.childCategoryNames}" class="dropdown-item" th:href="@{/store/main(category=${category2})}">[[${category2}]]</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="Product"  style = padding:70px;>
+
+
+
+            <div class="image">
+                <img th:src ="@{/item/display(fileName=${dto.getImg()})}"
+                     style="width:500px; height:570px" class="picture">
+            </div>
+
+
+                <div class="productside">
+                    <div class="explain">
+                        <h2>[[${dto.name}]]</h2><br>
+
+
+                        <h8>[[${dto.price}]]</h8>
+
+                        <br>
+                        <h4 class="detailExplain">상품 상세정보 <br></h4>
+
+
+                        <h8>Color</h8><br>
+                        <select id="p_Color" name="p_Color" th:each="option,state: ${dto.getOptionDTOList()}">
+                            <option th:value="${option.color}">[[${option.color}]]</option>
+                        </select><br><br>
+
+                        <h8>Size</h8><br>
+                        <select id="p_Size" name="p_Size" th:each="option : ${dto.getOptionDTOList()}">
+
+                            <option th:value="${option.size}">[[${option.size}]]</option>
+                        </select><br><br>
+                        <h8>수량</h8><br>
+                        <table>
+                            <tr style="border: 1px solid black; width:30px; height:20px;">
+                                <td>
+                                    <input type="text" id="w_Quantity"name="w_Quantity" size="2" value=1 maxlength=2 style="margin-top:7px;margin-left:10px; width:30px; height:18px; border:none; vertical-align: middle;">
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+
+                <br>
+
+                <div class="buttonClass">
+
+                    <input type="image" class="orderList" onclick="cartClick()" th:src="@{/img/cart.svg}">
+
+                </div>
+            <div class="image" >
+                <img th:src ="@{/item/display(fileName=${dto.getLongImg()})}"
+                     style="width:1000px;padding-top:40px;padding-bottom:40px;" class="picture">
+            </div>
+
+
+            <script th:inline="javascript">
+
+                var dto = [[${dto}]];
+                var optionList = [[${dto.getOptionDTOList()}]];
+                //장바구니
+                function cartClick(){
+                    var pColor=$("#p_Color option:selected").val();
+                    var pSize=$("#p_Size option:selected").val();
+                    var quantity = $("#w_Quantity").val();
+
+                    var idx= -1;
+                    for (var i =0;i<optionList.length;i++){
+                        if (optionList[i]["size"]==pSize &&optionList[i]["color"]==pColor ){
+                            idx = i;
+                        }
+                    }
+                    var optionId = optionList[idx]["id"];
+                    var parentId = optionList[idx]["parentId"];
+
+                    console.log("장바구니");
+                    console.log(optionId);
+
+
+                    var form = document.createElement("form");
+                    form.reset();
+                    form.setAttribute("charset", "UTF-8");
+                    form.setAttribute("method", "Post");  //Post 방식
+                    form.setAttribute("action", "/store/cart/"+optionId+"/"+quantity); //요청 보낼 주소
+
+                    document.body.appendChild(form);
+                    form.submit();
+
+                }
+
+            </script>
+
+
+            <div class="review">
+
+                <div class="title_area" >
+                    <div class="title_area1">
+                        <h1>Review</h1>
+                        <h2 th:if="${reviewList == null}">
+                            여러분의 고마운 리뷰를 기다립니다.
+                        </h2>
+                    </div>
+                </div>
+
+                <table th:unless="${reviewList==null}" class="table table-hover" style="height:100px; width:800px; ">
+                    <thead>
+                    <tr>
+                        <th style="width:5%; height:10%">평점</th>
+                        <th style="width:90%; height:10%">리뷰</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody >
+                    <tr th:each="review : ${reviewList}">
+                        <td style="width:5%; height:10%">[[${review.grade}]]</td>
+                        <td style="width:90%; height:10%">[[${review.text}]]</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+
+
+            </div><!--review class 끝  -->
+
+
+
+    </div><br>
+
+
+</div>
+
+</div>
+<!-- FOOTER -->
+<!--<div th:replace="~{/footer.html}"></div>-->

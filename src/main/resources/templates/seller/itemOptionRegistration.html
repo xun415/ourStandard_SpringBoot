@@ -1,0 +1,102 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<style>
+    body{
+        margin-left: 100px;
+        margin-right: 10%;
+    }
+    .table{
+        width: 1200px;
+    }
+
+    .table td{
+        text-align:center;
+        vertical-align: middle;
+    }
+
+</style>
+<!-- CONTENT -->
+<div class="content_wrap">
+    <!-- side_nav -->
+
+    <div class="col-auto p-0">
+        <div class="side_nav">
+            <div class="side_nav_item">
+                <p class="side_nav_title">브랜드 관리페이지</p>
+                <ul>
+                    <li><a th:href="@{/item/items}">상품관리</a></li>
+                    <li><a th:href="@{/store/purchaseList}">구매관리</a></li>
+                    <li><a th:href="@{/review/brand}">리뷰관리</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <br><br>
+        <h3>상품 옵션 관리</h3>
+        <br>
+<!--        <button ><a th:href="@{/item/{id}/option(id=${dto.id})}">옵션</a></button>-->
+        <form th:action="@{/item/{itemId}/option/new( itemId=${itemDTO.id} ) }" method="POST" enctype="multipart/form-data">
+<!--            <input type="hidden" id="parent_p_Id" name="parent_p_Id" th:value="${itemDTO.id}">-->
+<!--            <input type="hidden" id="pp_Brand" name="pp_Brand" value="<%=vo.getPp_Brand()%>">-->
+            <table class="table table-hover" height="100" width="1100">
+                <thead>
+                <tr>
+                    <th style="width:5%; height:10%">옵션추가</th>
+                    <th style="width:5%; height:10%">색상  <input type="text" name="p_Color"></th>
+                    <th style="width:5%; height:10%">사이즈  <input type="text" name="p_Size"></th>
+                    <th style="width:5%; height:10%">재고  <input type="text" name="p_Stack"></th>
+                    <th style="width:5%; height:10%">
+                        <input type="image" th:src="@{/img/add.png}" name="submit" value="submit" align="absmiddle"
+                               width="25" height="25">
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </form>
+
+
+        <br><br><br>
+        <table class="table table-hover" height="100" width="1100">
+            <thead>
+            <tr>
+                <th style="width:5%; height:10%">상품아이디</th>
+                <th style="width:5%; height:10%">색상</th>
+                <th style="width:5%; height:10%">사이즈</th>
+                <th style="width:5%; height:10%">재고</th>
+                <th style="width:5%; height:10%">수정 | 삭제</th>
+
+            </tr>
+            </thead>
+            <tbody>
+<!--            아이템 옵션 수정
+th:href="@{/item/{id}/modify(id=${dto.id})}"
+-->
+            <tr th:if="${itemOptions.size()>0}" th:each="dto :${itemOptions}" >
+                <form th:action="@{/item/{itemId}/option/{optionId}/modify(itemId=${dto.parentId},optionId=${dto.id})}" method="post">
+                    <td><input style="background-color:pink" name="p_Id" type="hidden"  th:value="${dto.id}">[[${dto.id}]]</td>
+                    <td><input name="p_Color" type="text" th:value="${dto.color}"></td>
+                    <td><input name="p_Size" type="text" th:value="${dto.size}"></td>
+                    <td><input name="p_Stack" type="text" th:value="${dto.stockQuantity}"></td>
+                    <td>
+                        <button type="submit">수정</button>
+                </form>
+                <form th:action="@{/item/{itemId}/option/{optionId}/delete(itemId=${dto.parentId},optionId=${dto.id})}" method="post">
+                <button type="submit">삭제</button></form>
+                </td>
+
+            </tr>
+            <tr th:unless="${itemOptions.size()>0}">
+                <td colspan="5">조회된 결과가 없습니다.</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

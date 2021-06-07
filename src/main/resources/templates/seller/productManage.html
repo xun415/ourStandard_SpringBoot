@@ -1,0 +1,127 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{/header.html}"></div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+<style>
+    #product_thumbnail {
+        width: 150px;
+    }
+    body{
+        margin-left: 100px;
+        margin-right: 10%;
+    }
+    .table{
+        width: 1200px;
+    }
+</style>
+
+<!-- CONTENT -->
+<div class="content_wrap">
+    <!-- side_nav -->
+    <div class="col-auto p-0">
+        <div class="side_nav">
+            <div class="side_nav_item">
+                <p class="side_nav_title">브랜드 관리페이지</p>
+                <ul>
+                    <li><a th:href="@{/item/items}">상품관리</a></li>
+                    <li><a th:href="@{/store/purchaseList}">구매관리</a></li>
+                    <li><a th:href="@{/review/brand}">리뷰관리</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <br><br>
+        <h3>상품관리</h3>
+        <br>
+        <div class="allCheck">
+            <input type="checkbox" name="allCheck" id="allCheck" /><label
+                for="allCheck">모두 선택</label>
+            <script>
+                $("#allCheck").click(function() {
+                    var chk = $("#allCheck").prop("checked");
+                    if (chk) {
+                        $(".chBox").prop("checked", true);
+                    } else {
+                        $(".chBox").prop("checked", false);
+                    }
+                });
+            </script>
+            <a class="delBtn">
+                <button type="button" class="selectDelete_btn">삭제하기</button>
+                <script th:inline="javascript">
+                    $(".selectDelete_btn").click(function() {
+                        var confirm_val = confirm("정말 삭제 하시겠습니까?");
+
+                        if (confirm_val) {
+                            $("input[class='chBox']:checked").each(function() {
+
+                                var itemId =$(this).attr("data-parent_p_Id");
+
+                                var form = document.createElement("form");
+                                form.setAttribute("charset", "UTF-8");
+                                form.setAttribute("method", "Post");
+                                form.setAttribute("action", "/item/"+itemId+"/delete");
+                                document.body.appendChild(form);
+                                form.submit();
+                            });
+                            }
+                    });
+                </script>
+            </a>
+
+        </div>
+        <table class="table table-hover" height="100" width="1100" style="text-align:center;">
+            <thead>
+            <tr>
+                <th style="width:5%; height:10%">번호</th>
+                <th style="width:5%; height:10%">상품명</th>
+                <th style="width:5%; height:10%">상품아이디</th>
+                <th style="width:5%; height:10%">카테고리1</th>
+                <th style="width:5%; height:10%">카테고리2</th>
+                <th style="width:5%; height:10%">썸네일</th>
+                <th style="width:5%; height:10%">가격</th>
+                <th style="width:7%; height:10%">수정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${itemDTOList.size()>0}" th:each="dto : ${itemDTOList}">
+                <td>
+                    <div class="checkBox">
+                        <input type="checkbox" name="chBox" class="chBox"
+                               th:data-parent_p_Id="${dto.id}" />
+                        <script>
+                            $(".chBox").click(
+                                function() {
+                                    $("#allCheck").prop(
+                                        "checked",
+                                        false);
+                                });
+                        </script>
+                    </div>
+                </td>
+                <td name="pp_Name">[[${dto.name}]]</td>
+                <td>[[${dto.id}]]</td>
+                <td>[[${dto.category1}]]</td>
+                <td>[[${dto.category2}]]</td>
+                <td><img th:src ="@{/item/display(fileName=${dto.s_fileName})}" id="product_thumbnail"></td>
+                <td>[[${dto.price}]]</td>
+                <td>
+                    <button ><a th:href="@{/item/{id}/modify(id=${dto.id})}">수정</a></button>
+                    <button ><a th:href="@{/item/{id}/option(id=${dto.id})}">옵션</a></button>
+                </td>
+            </tr>
+            <tr th:unless="${itemDTOList.size()>0}">
+                    <tr>
+                        <td colspan="8">조회된 결과가 없습니다.</td>
+                    </tr>
+            </tbody>
+        </table>
+<!--        <a th:href="@{/item/${item.id}/addOption}"><button-->
+<!--                class="add-product">옵션 추가하기</button></a>-->
+
+    </div>
+</div>
+<!-- FOOTER -->
+<div th:replace="~{/footer.html}"></div>

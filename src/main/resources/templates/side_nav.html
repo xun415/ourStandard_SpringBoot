@@ -1,0 +1,48 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<style>
+
+
+    /* SIDE BAR*/
+
+    .side_nav ul li a{
+        color: black;
+        text-decoration: none;
+        display: inline-block;
+        position: relative;
+    }
+    .side_nav ul li a:after {
+        background: none repeat scroll 0 0 transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 1px;
+        left: 50%;
+        position: absolute;
+        background: black;
+        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+        width: 0;
+    }
+    .side_nav ul li a:hover:after {
+        width: 100%;
+        left: 0;
+    }
+
+</style>
+<!-- SIDE NAV  -->
+
+<div class="side_nav">
+    <div class="side_nav_item">
+        <p class="side_nav_title"><a th:href="@{/customer/myPage}">My page</a></p>
+        <ul>
+
+            <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Login</a></li>
+            <li sec:authorize="isAnonymous()"><a th:href="@{/customer/register}">Register</a></li>
+
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/customer/modify}">Modify</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/store/cartList}" >Cart</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/customer/orderHistory}">Order</a></li>
+            <li sec:authorize="isAuthenticated()"><a href="https://www.cjlogistics.com/ko/tool/parcel/tracking">Delivery</a></li>
+
+        </ul>
+    </div>
+</div>
