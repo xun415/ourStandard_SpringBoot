@@ -88,7 +88,7 @@ public class Email {
 		public static void sendTempPWD(String customerID, String customerEmail, String tempPWD) {
 			final String bodyEncoding = "UTF-8"; //콘텐츠 인코딩
 			final String username = "noreply@vinocturne.cafe24.com";//"noreply@vinocturne.cafe24.com";  // like yourname@outlook.com
-		    final String password = "standard1@";   // password here
+		    final String password = "";   // password here
 		    String fromEmail = "noreply@ourstandard.shop";
 			String fromUsername = "OURSTANDARD MANAGER";
 			String subject ="ourstandard 임시비밀번호 발송";
@@ -159,45 +159,7 @@ public class Email {
 
 			
 		}
-//public static void main(String[] args) {
-//final String username = "noreply@vinocturne.cafe24.com";//"noreply@vinocturne.cafe24.com";  // like yourname@outlook.com
-//final String password = "standard1@";   // password here
-//String fromEmail = "noreply@ourstandard.shop";
-// String fromUsername = "SYSTEM MANAGER";
-//Properties props = new Properties();
-//props.put("mail.smtp.auth", "true");
-//props.put("mail.smtp.starttls.enable", "true");
-//props.put("mail.smtp.host", "smtp.cafe24.com");
-//props.put("mail.smtp.port", "25");
-//
-//
-//
-//Session session = Session.getInstance(props,
-//  new javax.mail.Authenticator() {
-//    @Override
-//    protected PasswordAuthentication getPasswordAuthentication() {
-//        return new PasswordAuthentication(username, password);
-//    }
-//  });
-//session.setDebug(true);
-//
-//try {
-//
-//    Message message = new MimeMessage(session);
-//    message.setFrom(new InternetAddress(fromEmail));
-//    message.setRecipients(Message.RecipientType.TO,
-//        InternetAddress.parse("vinocturne@naver.com"));   // like inzi769@gmail.com
-//    message.setSubject("제목 자바 이멜 테스트");
-//    message.setText("이거슨 카페24메일에서 구글을 연동해서 자바로 보내는 이메일이다.");
-//
-//    Transport.send(message);
-//
-//    System.out.println("Done");
-//
-//} catch (MessagingException e) {
-//    throw new RuntimeException(e);
-//}
-//}
+
 		
 			
 
