@@ -16,7 +16,7 @@ public class Email {
 		public static void sendFindIdResult(String customerID, String customerEmail) throws MessagingException{
 			final String bodyEncoding = "UTF-8"; //콘텐츠 인코딩
 			final String username = "noreply@vinocturne.cafe24.com";//"noreply@vinocturne.cafe24.com";  // like yourname@outlook.com
-		    final String password = "standard1@";   // password here
+		    final String password = "";   // password here
 		    String fromEmail = "noreply@ourstandard.shop";
 			String fromUsername = "OURSTANDARD MANAGER";
 			String subject ="ourstandard 아이디찾기 결과";
