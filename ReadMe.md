@@ -2,7 +2,7 @@
 
 해당 프로젝트는 기존 Spring framework+jsp+Mybatis 기반의 팀프로젝트를 **SpringBoot, JPA, Thymleaf** 기반으로 변형한 단독 프로젝트 입니다.
 
-> 기존 팀 프로젝트 보러가기 Click >> [Ourstandard](https://github.com/damlee89/standard-project)
+> 기존 팀 프로젝트 보러가기 Click >>  [homePage](http://ourstandard.shop/) [github](https://github.com/damlee89/standard-project)
 
 ___
 ## 리펙토링 포인트
