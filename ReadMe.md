@@ -14,7 +14,7 @@ ___
 ___
 ## 적용 기술
 
-**SpringBoot, JPA,SpringSecurity, Thymleaf,MariaDB, HTML, CSS, JavaScript, Ajax, jQuery**
+**SpringBoot, JPA,SpringSecurity, Thymleaf, MariaDB, HTML, CSS, JavaScript, Ajax, jQuery**
 
 ___
 ## 요구 사항 목록
